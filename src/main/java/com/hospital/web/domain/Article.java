@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 @Component	@Data
-public class ArticleDTO {
+public class Article {
 	@Getter @Setter
 	private	String art_seq,id,title,content,regdate,readCount;
 	

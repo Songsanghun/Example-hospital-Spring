@@ -3,12 +3,12 @@ package com.hospital.web.composite;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.hospital.web.domain.ContextDTO;
+import com.hospital.web.domain.Context;
 
 public class Complex {
 	public static class ContextFactory{
-	public static ContextDTO create(){
-		ContextDTO dto = new ContextDTO();
+	public static Context create(){
+		Context dto = new Context();
 		String context =  ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getContextPath();
 		dto.setPath(context);
 		dto.setCss(context+"/resources/css");

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 @Component @Data
-public class ContextDTO {
+public class Chart {
+
 	@Getter @Setter
-	private String path, js, css, img;
+	private String charID,treatID,docID,patID,nurID,chartContents;
 	
 }

@@ -6,9 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 @Component @Data
-public class ChartDTO {
-
-	@Getter @Setter
-	private String charID,treatID,docID,patID,nurID,chartContents;
+public class Nurse {
 	
+	@Getter @Setter
+	private String nurID,nurPass,majorJob,nurName,nurGen,nurPhone,nurEmail,nurPosition;
 }

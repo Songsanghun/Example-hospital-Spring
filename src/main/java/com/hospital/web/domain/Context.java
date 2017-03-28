@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-@Component @Data
-public class DoctorDTO {
 
+@Component @Data
+public class Context {
 	@Getter @Setter
-	private String docID,docPass,majorTreat,docName,docGen,docPhone,docEmail,docPosition;
+	private String path, js, css, img;
 	
 }

@@ -4,19 +4,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.hospital.web.domain.ArticleDTO;
+import com.hospital.web.domain.Article;
 @Component
 public interface BoardService {
-public String addArticle(ArticleDTO param)throws Exception; // Article 글하나를 의미
+public String addArticle(Article param)throws Exception; // Article 글하나를 의미
 	
 	//r
-	public ArticleDTO findOne(ArticleDTO param)throws Exception;
-	public List<ArticleDTO> findSome(String[] param)throws Exception;
-	public List<ArticleDTO> list(int[] pageArr)throws Exception;
+	public Article findOne(Article param)throws Exception;
+	public List<Article> findSome(String[] param)throws Exception;
+	public List<Article> list(int[] pageArr)throws Exception;
 	
 	//u
-	public String update(ArticleDTO param)throws Exception;
+	public String update(Article param)throws Exception;
 	//d
-	public String delete(ArticleDTO param)throws Exception;
+	public String delete(Article param)throws Exception;
 	public int count()throws Exception;
 }

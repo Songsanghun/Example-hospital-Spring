@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.hospital.web.composite.Complex;
-import com.hospital.web.domain.ContextDTO;
+import com.hospital.web.domain.Context;
 
 /**
  * Handles requests for the application home page.
