@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	 <context:annotation-config/>
+	 <context:component-scan base-package="com.hospital.web"/>
+	 <mvc:annotation-driven /> 
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+		 <mybatis-spring:scan base-package="com.hospital.web.mapper"/>
+	 <context:property-placeholder location="classpath:/config/database.properties"/>
+	 <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource">
+	 	<property name="driverClassName" value="${jdbc.driver}"/>
+	 	<property name="url" value="${jdbc.url}"/>
+	 	<property name="username" value="${jdbc.username}"/>
+	 	<property name="password" value="${jdbc.password}"/>
+	 </bean>
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+   <constructor-arg ref="dataSourceSpied"/>
+   <property name="logFormatter">
+      <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+         <property name="loggingType" value="MULTI_LINE"/>
+         <property name="sqlPrefix" value="SQL    :"/>
+      </bean>
+   </property>
+   </bean>
+   
+	 <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dataSource"/>
+	 	<property name="mapperLocations" value="classpath*:com/hospital/web/mapper/*.xml"/>
+	 </bean>
+	 <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	 	<constructor-arg ref="sqlSessionFactoryBean"/>
+	 </bean>
+	 <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 	<property name="dataSource" ref="dataSource"/>
+	 </bean>
+	<!-- 여기까지가 IoC 객체 -->
+	<!-- 여기서 부터가 DI객체 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager" ref="contentNegotiationManager" />
+		<property name="viewResolvers">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+					<property name="viewClass"
+						value="org.springframework.web.servlet.view.tiles3.TilesView" />
+				</bean>
+				<bean
+					class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/views/" />
+					<property name="suffix" value=".jsp" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean  id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManager">
+		<constructor-arg>
+			<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+				<constructor-arg>
+					<map>
+						<entry key="atom">
+							<util:constant static-field="org.springframework.http.MediaType.APPLICATION_ATOM_XML"/>
+						</entry>
+					</map>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+	</bean>
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+</beans>
