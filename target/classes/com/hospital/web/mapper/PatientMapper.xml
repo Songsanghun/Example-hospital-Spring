@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hospital.web.mapper.PatientMapper">
+  <select id="selectById" resultType="com.hospital.web.domain.PatientDTO" 
+  parameterType="String">
+    SELECT  
+    	pat_id AS patID,
+    	nur_id AS nurID,
+    	doc_id AS docID,
+    	pat_pass AS patPass,
+    	pat_name AS patName,
+    	pat_gen AS patGen,
+    	pat_jumin AS patJumin,
+    	pat_addr AS patAddr,
+    	pat_phone AS patPhone,
+    	pat_email AS patEmail,
+    	pat_job AS patJob
+     FROM Patient WHERE pat_id = #{id}
+  </select>
+  <select id="count" resultType="int">
+  	SELECT COUNT(*) FROM Patient
+  </select>
+  <select id="exist" resultType="int" parameterType="String">
+  	SELECT COUNT(*) FROM Patient WHERE pat_id=#{id}
+  </select>
+</mapper>

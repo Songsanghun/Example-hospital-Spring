@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+encoding//src/main/resources/config/database.properties=UTF-8
+encoding//src/main/resources/sql/mysql_hospital.properties=UTF-8
+encoding//src/main/resources/sql/ora_hospital.properties=UTF-8
