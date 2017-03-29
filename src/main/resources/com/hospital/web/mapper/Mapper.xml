@@ -16,7 +16,7 @@
 		<result property="email" column="pat_email"/>
 		<result property="job" column="pat_job"/>
 	</resultMap>
-	<resultMap type="com.hospital.web.domain.Patient" id="Doctor">
+	<resultMap type="com.hospital.web.domain.Doctor" id="Doctor">
 		<id property="id" column="doc_id"/>
 		<result property="pass" column="doc_pass"/>
 		<result property="name" column="doc_name"/>
@@ -26,7 +26,7 @@
 		<result property="major" column="major_treat"/>
 		<result property="position" column="doc_position"/>
 	</resultMap>
-	<resultMap type="com.hospital.web.domain.Patient" id="Nurse">
+	<resultMap type="com.hospital.web.domain.Nurse" id="Nurse">
 		<id property="id" column="nur_id"/>
 		<result property="pass" column="nur_pass"/>
 		<result property="name" column="nur_name"/>
@@ -36,19 +36,78 @@
 		<result property="major" column="major_job"/>
 		<result property="position" column="nur_position"/>
 	</resultMap>
-
+	<insert id="registPatient">
+	  INSERT INTO ${group}(${pat_id},${pat_pass},${pat_name},${pat_gen},${pat_phone},${pat_email},${pat_job},${pat_jumin},${pat_addr},${doc_id},${nur_id}) 
+   VALUES ( #{id}, #{pass}, #{name}, #{gen}, #{phone}, #{email},#{job}, #{jumin}, #{addr}, #{docID}, #{nurID})
+   </insert>
+    <insert id="registDoctor">
+  INSERT INTO ${group}(${doc_id},${doc_pass},${doc_name},${doc_gen},${doc_phone},${doc_email},${major_treat},${doc_position}) 
+   VALUES ( #{id}, #{pass}, #{name}, #{gen}, #{phone}, #{email}, #{major}, #{position})
+   </insert>
+    <insert id="registNurse">
+  INSERT INTO ${group}(${nur_id},${nur_pass},${nur_name},${nur_gen},${nur_phone},${nur_email},${major_job},${nur_position}) 
+   VALUES ( #{id}, #{pass}, #{name}, #{gen}, #{phone}, #{email},#{major}, #{position})
+	</insert>
+	
   <select id="findPatient" resultMap="Patient" parameterType="hashMap">
     SELECT * FROM ${group} WHERE ${key} = #{value}
     <!-- 이부분은 동적(다이나믹) SQL --> 
   </select>
-    <select id="findDoctor" resultMap="Doctor" parameterType="hashMap">
+  <select id="findDoctor" resultMap="Doctor" parameterType="hashMap">
     SELECT * FROM ${group} WHERE ${key} = #{value}
-    <!-- 이부분은 동적(다이나믹) SQL --> 
   </select>
-   <select id="findNurse" resultMap="Nurse" parameterType="hashMap">
+  <select id="findNurse" resultMap="Nurse" parameterType="hashMap">
     SELECT * FROM ${group} WHERE ${key} = #{value}
-    <!-- 이부분은 동적(다이나믹) SQL --> 
   </select>
+  <select id="findPatients" resultMap="Patient" parameterType="hashMap">
+    SELECT * FROM ${group} WHERE
+  <if test="${key} != null">
+    ${key} = #{value}
+  </if> 
+  <if test="title != null">
+    AND title like #{title}
+  </if>
+  <if test="author != null and author.name != null">
+    AND author_name like #{author.name}
+  </if>
+  </select>
+  
+  <select id="findDoctors" resultMap="Doctor" parameterType="hashMap">
+    SELECT * FROM ${group} WHERE
+  <if test="  ${key} != null">
+     ${key} = #{value}
+  </if> 
+  <if test="title != null">
+    AND title like #{title}
+  </if>
+  <if test="author != null and author.name != null">
+    AND author_name like #{author.name}
+  </if>
+  </select>
+  
+  <select id="findNurses" resultMap="Nurse" parameterType="hashMap">
+    SELECT * FROM ${group} WHERE
+  <if test="  ${key} != null">
+     ${key} = #{value}
+  </if> 
+  <if test="title != null">
+    AND title like #{title}
+  </if>
+  <if test="author != null and author.name != null">
+    AND author_name like #{author.name}
+  </if>
+  </select>
+  <update id="updateAuthorIfNecessary">
+  update Author
+    <set>
+      <if test="username != null">username=#{username},</if>
+      <if test="password != null">password=#{password},</if>
+      <if test="email != null">email=#{email},</if>
+      <if test="bio != null">bio=#{bio}</if>
+    </set>
+  where id=#{id}
+  </update>
+  
   <select id="count" resultType="int">
   	SELECT COUNT(*) FROM {}
   </select>
@@ -177,16 +236,7 @@
   </where>
 </select>
 
-<update id="updateAuthorIfNecessary">
-  update Author
-    <set>
-      <if test="username != null">username=#{username},</if>
-      <if test="password != null">password=#{password},</if>
-      <if test="email != null">email=#{email},</if>
-      <if test="bio != null">bio=#{bio}</if>
-    </set>
-  where id=#{id}
-</update>
+
 <select id="selectPostIn" resultType="com.hospital.web.domain.Patient">
   SELECT 
   	pat_id AS patID,
@@ -224,17 +274,7 @@
   FROM Patient
   WHERE title LIKE #{pattern}
 </select>
-<insert id="insert">
-  <selectKey keyProperty="id" resultType="int" order="BEFORE">
-    <if test="_databaseId == 'oracle'">
-      select seq_users.nextval from dual
-    </if>
-    <if test="_databaseId == 'db2'">
-      select nextval for seq_users from sysibm.sysdummy1"
-    </if>
-  </selectKey>
-  insert into users values (#{id}, #{name})
-</insert>
+
 
 
 
