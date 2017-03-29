@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value="/doctor")
 public class DoctorController {
 	private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
-	@RequestMapping(value="/login")
-		public String goLogin(){
-			logger.info("DoctorController - goLogin() {} !!","ENTER");
-			return "public:common/logionForm";
-		}
+	
 	@RequestMapping(value="/detail/{docID}")
 	public String detail(@PathVariable String docID){
 		logger.info("DoctorController - goLogin() {} !!","ENTER");

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.hospital.web.domain.Doctor;
 import com.hospital.web.domain.Info;
+import com.hospital.web.domain.Nurse;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
 import com.hospital.web.domain.Schema;
@@ -87,8 +89,92 @@ public class PermissionController {
 				
 			}
 			break;
+		case "doctor":
+			person=new Person<Info>(new Doctor());
+			Doctor doctor=(Doctor) person.getInfo();
+			doctor.setId(id);
+			doctor.setPass(password);
+			map = new HashMap<>();
+			map.put("group", doctor.getGroup());
+			map.put("key", Schema.DOCTOR.getName());
+			map.put("value", id);
+			ex=new CRUD.Service() {
+				
+				@Override
+				public Object execute(Object o) throws Exception {
+					logger.info("======ID ? {} ======", o);
+					return mapper.exist(map);
+				}
+			};
+			count=(Integer)ex.execute(id);
+			logger.info("ID exist ? {}", count);
 			
+			if(count==0){
+				logger.info("DB RESULT: {}", "ID not exist");
+				movePosition="public:common/loginForm";
+			}else{
+				CRUD.Service service=new CRUD.Service() {
+					@Override
+					public Object execute(Object o) throws Exception {
+						return mapper.findDoctor(map);
+					}
+				};
+				doctor=(Doctor) service.execute(doctor);
+				if(doctor.getPass().equals(password)){
+					logger.info("DB RESULT: {}", "success");
+					session.setAttribute("permission", doctor);
+					model.addAttribute("doctor", doctor);
+					movePosition="patient:patient/containerDetail";
+				}else{
+					logger.info("DB RESULT: {}", "password not match");
+					movePosition="public:common/loginForm";
+				}
+				
+			}
+			break;
+		case "nurse":
+			person=new Person<Info>(new Nurse());
+			Nurse nurse=(Nurse) person.getInfo();
+			nurse.setId(id);
+			nurse.setPass(password);
+			map = new HashMap<>();
+			map.put("group", nurse.getGroup());
+			map.put("key", Schema.NURSE.getName());
+			map.put("value", id);
+			ex=new CRUD.Service() {
+				
+				@Override
+				public Object execute(Object o) throws Exception {
+					logger.info("======ID ? {} ======", o);
+					return mapper.exist(map);
+				}
+			};
+			count=(Integer)ex.execute(id);
+			logger.info("ID exist ? {}", count);
 			
+			if(count==0){
+				logger.info("DB RESULT: {}", "ID not exist");
+				movePosition="public:common/loginForm";
+			}else{
+				CRUD.Service service=new CRUD.Service() {
+					@Override
+					public Object execute(Object o) throws Exception {
+						return mapper.findNurse(map);
+					}
+				};
+				nurse=(Nurse) service.execute(nurse);
+				if(nurse.getPass().equals(password)){
+					logger.info("DB RESULT: {}", "success");
+					session.setAttribute("permission", nurse);
+					model.addAttribute("doctor", nurse);
+					movePosition="patient:patient/containerDetail";
+				}else{
+					logger.info("DB RESULT: {}", "password not match");
+					movePosition="public:common/loginForm";
+				}
+				
+			}
+			break;
 		default:
 			break;
 		}
@@ -99,4 +185,5 @@ public class PermissionController {
 			session.invalidate();
 		return "redirect:/";
 	}
+		
 }

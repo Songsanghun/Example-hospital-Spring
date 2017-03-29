@@ -61,40 +61,49 @@
   </select>
   <select id="findPatients" resultMap="Patient" parameterType="hashMap">
     SELECT * FROM ${group} WHERE
-  <if test="${key} != null">
-    ${key} = #{value}
+  <if test=" pat_name != null">
+	pat_name LIKE #{%value%}
   </if> 
-  <if test="title != null">
-    AND title like #{title}
+  <if test=" pat_gen != null">
+    pat_gen LIKE #{%value%}
   </if>
-  <if test="author != null and author.name != null">
-    AND author_name like #{author.name}
+  <if test="pat_job != null">
+   pat_job LIKE #{%value%}
+  </if>
+  <if test="doc_id != null">
+   doc_id LIKE #{%value%}
+  </if>
+  <if test="nur_id != null">
+   nur_id LIKE #{%value%}
   </if>
   </select>
   
   <select id="findDoctors" resultMap="Doctor" parameterType="hashMap">
     SELECT * FROM ${group} WHERE
-  <if test="  ${key} != null">
-     ${key} = #{value}
+  <if test="  doc_gen != null">
+   doc_gen LIKE #{%value%}
   </if> 
-  <if test="title != null">
-    AND title like #{title}
+  <if test="major_treat != null">
+    major_treat LIKE #{%value%}
   </if>
-  <if test="author != null and author.name != null">
-    AND author_name like #{author.name}
+  <if test="doc_position != null">
+    doc_position LIKE #{%value%}
+  </if>
+  <if test="doc_name != null">
+    doc_name LIKE #{%value%}
   </if>
   </select>
   
   <select id="findNurses" resultMap="Nurse" parameterType="hashMap">
     SELECT * FROM ${group} WHERE
-  <if test="  ${key} != null">
-     ${key} = #{value}
+  <if test="  major_job != null">
+ 	major_job LIKE #{%value%}
   </if> 
-  <if test="title != null">
-    AND title like #{title}
+  <if test="nur_gen != null">
+    nur_gen like #{%value%}
   </if>
-  <if test="author != null and author.name != null">
-    AND author_name like #{author.name}
+  <if test="nur_position != null">
+    nur_position like #{%value%}
   </if>
   </select>
   <update id="updateAuthorIfNecessary">
