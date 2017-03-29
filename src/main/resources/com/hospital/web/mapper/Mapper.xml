@@ -2,28 +2,58 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hospital.web.mapper.PatientMapper">
-  <select id="selectById" resultType="com.hospital.web.domain.Patient" 
-  parameterType="String">
-    SELECT  
-    	pat_id AS patID,
-    	nur_id AS nurID,
-    	doc_id AS docID,
-    	pat_pass AS patPass,
-    	pat_name AS patName,
-    	pat_gen AS patGen,
-    	pat_jumin AS patJumin,
-    	pat_addr AS patAddr,
-    	pat_phone AS patPhone,
-    	pat_email AS patEmail,
-    	pat_job AS patJob
-     FROM Patient WHERE pat_id = #{id}
+<mapper namespace="com.hospital.web.mapper.Mapper">
+	<resultMap type="com.hospital.web.domain.Patient" id="Patient">
+		<id property="id" column="pat_id"/>
+		<result property="nurID" column="nur_id"/>
+		<result property="docID" column="doc_id"/>
+		<result property="pass" column="pat_pass"/>
+		<result property="name" column="pat_name"/>
+		<result property="gen" column="pat_gen"/>
+		<result property="jumin" column="pat_jumin"/>
+		<result property="addr" column="pat_addr"/>
+		<result property="phone" column="pat_phone"/>
+		<result property="email" column="pat_email"/>
+		<result property="job" column="pat_job"/>
+	</resultMap>
+	<resultMap type="com.hospital.web.domain.Patient" id="Doctor">
+		<id property="id" column="doc_id"/>
+		<result property="pass" column="doc_pass"/>
+		<result property="name" column="doc_name"/>
+		<result property="gen" column="doc_gen"/>
+		<result property="phone" column="doc_phone"/>
+		<result property="email" column="doc_email"/>
+		<result property="major" column="major_treat"/>
+		<result property="position" column="doc_position"/>
+	</resultMap>
+	<resultMap type="com.hospital.web.domain.Patient" id="Nurse">
+		<id property="id" column="nur_id"/>
+		<result property="pass" column="nur_pass"/>
+		<result property="name" column="nur_name"/>
+		<result property="gen" column="nur_gen"/>
+		<result property="phone" column="nur_phone"/>
+		<result property="email" column="nur_email"/>
+		<result property="major" column="major_job"/>
+		<result property="position" column="nur_position"/>
+	</resultMap>
+
+  <select id="findPatient" resultMap="Patient" parameterType="hashMap">
+    SELECT * FROM ${group} WHERE ${key} = #{value}
+    <!-- 이부분은 동적(다이나믹) SQL --> 
+  </select>
+    <select id="findDoctor" resultMap="Doctor" parameterType="hashMap">
+    SELECT * FROM ${group} WHERE ${key} = #{value}
+    <!-- 이부분은 동적(다이나믹) SQL --> 
+  </select>
+   <select id="findNurse" resultMap="Nurse" parameterType="hashMap">
+    SELECT * FROM ${group} WHERE ${key} = #{value}
+    <!-- 이부분은 동적(다이나믹) SQL --> 
   </select>
   <select id="count" resultType="int">
-  	SELECT COUNT(*) FROM Patient
+  	SELECT COUNT(*) FROM {}
   </select>
-  <select id="exist" resultType="int" parameterType="String">
-  	SELECT COUNT(*) FROM Patient WHERE pat_id=#{id}
+  <select id="exist" resultType="int" parameterType="hashMap">
+  	SELECT COUNT(*) FROM ${group} WHERE ${key} = #{value}
   </select>
   <select id="find"  resultType="com.hospital.web.domain.Patient">
     	SELECT 

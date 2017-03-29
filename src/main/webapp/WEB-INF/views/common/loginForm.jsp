@@ -27,7 +27,12 @@
 		<input type="text" name="password" value=""/>
 		</td>
 	</tr>
+	
 </table>
+	<input type="radio" name="permission" value="patient" checked>고객
+ 	<input type="radio" name="permission" value="doctor">의사
+  	<input type="radio" name="permission" value="nurse">간호사
+  	<input type="radio" name="permission" value="admin">관리자
 <input type="hidden" name="action" value="login">
 <input type="hidden" name="page" value="main">
 </form>
@@ -39,11 +44,14 @@
 <jsp:include page="../common/footer.jsp"/>
 <script>
 $(function(){
-	var $loginForm=$('#loginForm');
-	var tab=$loginForm.find('table');
+	var $loginForm = $('#loginForm');
+	var tab = $loginForm.find('table');
+	
 	$('#loginForm input[value=로그인]').click(function(){
-		$loginForm.attr('action','${context.path}/patient/login');
-		$loginForm.attr('method','post');
+	var permission = $loginForm.find(':radio[name="permission"]:checked').val()
+		alert('permission :'+permission)
+		$loginForm.attr("action","${context.path}/"+permission+"/login");
+		$loginForm.attr("method","post");
 	var idVal=tab.find('input[name=id]').val();
 	var pwVal=tab.find('input[name=password]').val();	
 		if(idVal==''||pwVal==''){

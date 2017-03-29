@@ -8,8 +8,8 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/webapp/WEB-INF/tiles.xml</config>
-		<config>src/main/resources/com/hospital/web/mapper/PatientMapper.xml</config>
 		<config>src/main/resources/META-INF/application-context.xml</config>
+		<config>src/main/resources/com/hospital/web/mapper/Mapper.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
