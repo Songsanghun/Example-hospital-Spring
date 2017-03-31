@@ -6,22 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.hospital.web.domain.Admin;
 import com.hospital.web.domain.Command;
-import com.hospital.web.domain.Doctor;
-import com.hospital.web.domain.Info;
-import com.hospital.web.domain.Nurse;
-import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
 import com.hospital.web.mapper.Mapper;
-import com.hospital.web.service.CRUD;
 
 @Controller
 public class PersonController {
@@ -32,7 +24,6 @@ public class PersonController {
 			Command command, //Command 를 주입한다.
 			@RequestBody Map<String,Object>map,
 			@PathVariable String type) throws Exception{
-		command.process(map);
 		logger.info("PersonController - register() {} !!","ENTER");
 		if(type.equals("")){type = "patient";}
 		map.put("type", type);

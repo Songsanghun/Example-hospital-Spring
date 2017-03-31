@@ -19,6 +19,10 @@ public class Command implements Orderble{
    public Command(Map<?,?>map) {
       map=new HashMap<>();
    }
+   @Override
+   public Command process(Map<?, ?> map) {
+	   return new Command(map);
+   }
    
    public Integer[] getPageInfo() {
       Paignation pg=new Paignation();
@@ -73,10 +77,6 @@ public class Command implements Orderble{
    }
    
 
-   @Override
-   public Command process(Map<?, ?> map) {
-	return new Command(map);
-   }
    
    class Paignation{
       private int rowCount,pageNo,pageStart,pageEnd,pageCount,
