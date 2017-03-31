@@ -29,150 +29,150 @@ import com.hospital.web.service.CRUD;
 @SessionAttributes("permission")
 public class PermissionController {
 	private static final Logger logger = LoggerFactory.getLogger(PermissionController.class);
-	@Autowired Mapper mapper;
+	@Autowired
+	Mapper mapper;
+
 	@RequestMapping("/login")
-	public String login(){
+	public String login() {
 		logger.info("PermissionController - goLogin() {}", "ENTER");
 		return "public:common/loginForm";
 	}
-	
-	@RequestMapping(value="/{permission}/login",method=RequestMethod.POST)
-	public String login(@RequestParam("id") String id,
-			@RequestParam("password") String password,
-			@PathVariable String permission, HttpSession session,
-			Model model) throws Exception{
+
+	@RequestMapping(value = "/{permission}/login", method = RequestMethod.POST)
+	public String login(@RequestParam("id") String id, @RequestParam("password") String password,
+			@PathVariable String permission, HttpSession session, Model model) throws Exception {
 		logger.info("Permission - login() {}", "POST");
-		logger.info("Permission - id, pw: {}", id+","+password);
-		String movePosition="";
-		
+		logger.info("Permission - id, pw: {}", id + "," + password);
+		String movePosition = "";
+
 		switch (permission) {
 		case "patient":
-			Person<?> person=new Person<Info>(new Patient());
-			Patient patient=(Patient) person.getInfo();
+			Person<?> person = new Person<Info>(new Patient());
+			Patient patient = (Patient) person.getInfo();
 			patient.setId(id);
 			patient.setPass(password);
-			Map<String,Object> map = new HashMap<>();
+			Map<String, Object> map = new HashMap<>();
 			map.put("group", patient.getGroup());
 			map.put("key", Enums.PATIENT.val());
 			map.put("value", id);
-			CRUD.Service ex=new CRUD.Service() {
-				
+			CRUD.Service ex = new CRUD.Service() {
+
 				@Override
 				public Object execute(Object o) throws Exception {
 					logger.info("======ID ? {} ======", o);
 					return mapper.exist(map);
 				}
 			};
-			Integer count=(Integer)ex.execute(id);
+			Integer count = (Integer) ex.execute(id);
 			logger.info("ID exist ? {}", count);
-			
-			if(count==0){
+
+			if (count == 0) {
 				logger.info("DB RESULT: {}", "ID not exist");
-				movePosition="public:common/loginForm";
-			}else{
-				CRUD.Service service=new CRUD.Service() {
+				movePosition = "public:common/loginForm";
+			} else {
+				CRUD.Service service = new CRUD.Service() {
 					@Override
 					public Object execute(Object o) throws Exception {
 						return mapper.findPatient(map);
 					}
 				};
-				patient=(Patient) service.execute(patient);
-				if(patient.getPass().equals(password)){
+				patient = (Patient) service.execute(patient);
+				if (patient.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
 					session.setAttribute("permission", patient);
 					model.addAttribute("user", patient);
-					movePosition="patient:patient/containerDetail";
-				}else{
+					movePosition = "patient:patient/containerDetail";
+				} else {
 					logger.info("DB RESULT: {}", "password not match");
-					movePosition="public:common/loginForm";
+					movePosition = "public:common/loginForm";
 				}
-				
+
 			}
 			break;
 		case "doctor":
-			person=new Person<Info>(new Doctor());
-			Doctor doctor=(Doctor) person.getInfo();
+			person = new Person<Info>(new Doctor());
+			Doctor doctor = (Doctor) person.getInfo();
 			doctor.setId(id);
 			doctor.setPass(password);
 			map = new HashMap<>();
 			map.put("group", doctor.getGroup());
 			map.put("key", Enums.DOCTOR.val());
 			map.put("value", id);
-			ex=new CRUD.Service() {
-				
+			ex = new CRUD.Service() {
+
 				@Override
 				public Object execute(Object o) throws Exception {
 					logger.info("======ID ? {} ======", o);
 					return mapper.exist(map);
 				}
 			};
-			count=(Integer)ex.execute(id);
+			count = (Integer) ex.execute(id);
 			logger.info("ID exist ? {}", count);
-			
-			if(count==0){
+
+			if (count == 0) {
 				logger.info("DB RESULT: {}", "ID not exist");
-				movePosition="public:common/loginForm";
-			}else{
-				CRUD.Service service=new CRUD.Service() {
+				movePosition = "public:common/loginForm";
+			} else {
+				CRUD.Service service = new CRUD.Service() {
 					@Override
 					public Object execute(Object o) throws Exception {
 						return mapper.findDoctor(map);
 					}
 				};
-				doctor=(Doctor) service.execute(doctor);
-				if(doctor.getPass().equals(password)){
+				doctor = (Doctor) service.execute(doctor);
+				if (doctor.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
 					session.setAttribute("permission", doctor);
 					model.addAttribute("doctor", doctor);
-					movePosition="patient:patient/containerDetail";
-				}else{
+					movePosition = "patient:patient/containerDetail";
+				} else {
 					logger.info("DB RESULT: {}", "password not match");
-					movePosition="public:common/loginForm";
+					movePosition = "public:common/loginForm";
 				}
-				
+
 			}
 			break;
 		case "nurse":
-			person=new Person<Info>(new Nurse());
-			Nurse nurse=(Nurse) person.getInfo();
+			person = new Person<Info>(new Nurse());
+			Nurse nurse = (Nurse) person.getInfo();
 			nurse.setId(id);
 			nurse.setPass(password);
 			map = new HashMap<>();
 			map.put("group", nurse.getGroup());
 			map.put("key", Enums.NURSE.val());
 			map.put("value", id);
-			ex=new CRUD.Service() {
-				
+			ex = new CRUD.Service() {
+
 				@Override
 				public Object execute(Object o) throws Exception {
 					logger.info("======ID ? {} ======", o);
 					return mapper.exist(map);
 				}
 			};
-			count=(Integer)ex.execute(id);
+			count = (Integer) ex.execute(id);
 			logger.info("ID exist ? {}", count);
-			
-			if(count==0){
+
+			if (count == 0) {
 				logger.info("DB RESULT: {}", "ID not exist");
-				movePosition="public:common/loginForm";
-			}else{
-				CRUD.Service service=new CRUD.Service() {
+				movePosition = "public:common/loginForm";
+			} else {
+				CRUD.Service service = new CRUD.Service() {
 					@Override
 					public Object execute(Object o) throws Exception {
 						return mapper.findNurse(map);
 					}
 				};
-				nurse=(Nurse) service.execute(nurse);
-				if(nurse.getPass().equals(password)){
+				nurse = (Nurse) service.execute(nurse);
+				if (nurse.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
 					session.setAttribute("permission", nurse);
 					model.addAttribute("doctor", nurse);
-					movePosition="patient:patient/containerDetail";
-				}else{
+					movePosition = "patient:patient/containerDetail";
+				} else {
 					logger.info("DB RESULT: {}", "password not match");
-					movePosition="public:common/loginForm";
+					movePosition = "public:common/loginForm";
 				}
-				
+
 			}
 			break;
 		default:
@@ -180,10 +180,11 @@ public class PermissionController {
 		}
 		return movePosition;
 	}
-		@RequestMapping("/logout")
-		public String logout(HttpSession session){
-			session.invalidate();
+
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
 		return "redirect:/";
 	}
-		
+
 }
