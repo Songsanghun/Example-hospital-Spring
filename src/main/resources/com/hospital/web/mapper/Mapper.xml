@@ -283,7 +283,11 @@
   FROM Patient
   WHERE title LIKE #{pattern}
 </select>
-
+	<delete id="delete" parameterType="hashMap">
+		DELETE 
+		FROM ${group} 
+		WHERE ${key} - #{value}
+	</delete>
 
 
 

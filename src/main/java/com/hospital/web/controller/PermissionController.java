@@ -21,7 +21,7 @@ import com.hospital.web.domain.Info;
 import com.hospital.web.domain.Nurse;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
-import com.hospital.web.domain.Schema;
+import com.hospital.web.domain.Enums;
 import com.hospital.web.mapper.Mapper;
 import com.hospital.web.service.CRUD;
 
@@ -53,7 +53,7 @@ public class PermissionController {
 			patient.setPass(password);
 			Map<String,Object> map = new HashMap<>();
 			map.put("group", patient.getGroup());
-			map.put("key", Schema.PATIENT.getName());
+			map.put("key", Enums.PATIENT.val());
 			map.put("value", id);
 			CRUD.Service ex=new CRUD.Service() {
 				
@@ -80,7 +80,7 @@ public class PermissionController {
 				if(patient.getPass().equals(password)){
 					logger.info("DB RESULT: {}", "success");
 					session.setAttribute("permission", patient);
-					model.addAttribute("patient", patient);
+					model.addAttribute("user", patient);
 					movePosition="patient:patient/containerDetail";
 				}else{
 					logger.info("DB RESULT: {}", "password not match");
@@ -96,7 +96,7 @@ public class PermissionController {
 			doctor.setPass(password);
 			map = new HashMap<>();
 			map.put("group", doctor.getGroup());
-			map.put("key", Schema.DOCTOR.getName());
+			map.put("key", Enums.DOCTOR.val());
 			map.put("value", id);
 			ex=new CRUD.Service() {
 				
@@ -139,7 +139,7 @@ public class PermissionController {
 			nurse.setPass(password);
 			map = new HashMap<>();
 			map.put("group", nurse.getGroup());
-			map.put("key", Schema.NURSE.getName());
+			map.put("key", Enums.NURSE.val());
 			map.put("value", id);
 			ex=new CRUD.Service() {
 				

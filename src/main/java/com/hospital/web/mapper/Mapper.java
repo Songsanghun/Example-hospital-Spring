@@ -12,18 +12,18 @@ import com.hospital.web.domain.Patient;
 @Repository
 public interface Mapper {
 	
-	public int registPatient(Patient patient) throws Exception;
-	public int registDoctor(Doctor doctor) throws Exception;
-	public int registNurse(Nurse nurse) throws Exception;
+	public int registPatient(Object o) throws Exception;
+	public int registDoctor(Object o) throws Exception;
+	public int registNurse(Object o) throws Exception;
 	public Patient findPatient(Map <?,?>map) throws Exception; 
 	public Doctor findDoctor(Map <?,?>map) throws Exception; 
 	public Nurse findNurse(Map <?,?>map) throws Exception;
 	public List<Patient> findPatients(Map <?,?>map) throws Exception; 
 	public List<Doctor> findDoctors(Map <?,?>map) throws Exception; 
 	public List<Nurse> findNurses(Map <?,?>map) throws Exception; 
-	public int updatePatient(Patient patient) throws Exception; 
-	public int updateDoctor(Doctor doctor) throws Exception; 
-	public int updateNurse(Nurse nurse) throws Exception; 
+	public int updatePatient(Object o) throws Exception; 
+	public int updateDoctor(Object o) throws Exception; 
+	public int updateNurse(Object o) throws Exception; 
 	public int delete(Map <?,?>map) throws Exception; 
 	public int count(Map <?,?>map) throws Exception;
 	public int exist(Map <?,?>map) throws Exception; 

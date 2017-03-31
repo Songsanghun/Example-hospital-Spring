@@ -12,31 +12,31 @@
                   <tr>
                         <td style="width: 60px" rowspan="5"><span style="font-size: 20px">나<br />의<br />정<br />보</span></td>
                         <td style="width: 100px">이름</td>
-                        <td style="width: 150px">${Name}</td>
+                        <td style="width: 150px">${user.name}</td>
                         <td style="width: 100px">직업</td>
-                        <td style="width: 150px"></td>
+                        <td style="width: 150px">${user.job}</td>
                   </tr>
                   <tr>
                         <td>생년월일</td>
-                        <td></td>
+                        <td>${user.jumin}</td>
                         <td>키</td>
                         <td>180cm</td>
                   </tr>
                   <tr>
                         <td>성별</td>
-                        <td></td>
+                        <td>${user.gen}</td>
                         <td>나이/몸무게</td>
                         <td>/80kg</td>
                   </tr>
                   <tr>
                         <td>전화번호</td>
-                        <td></td>
+                        <td>${user.phone}</td>
                         <td>혈액형</td>
                         <td>A형</td>
                   </tr>
                   <tr>
                         <td>주소</td>
-                        <td></td>
+                        <td>${user.addr}</td>
                         <td>주치의</td>
                         <td>
                         <a onclick="docDetail()" href="#"> 한석규 </a>

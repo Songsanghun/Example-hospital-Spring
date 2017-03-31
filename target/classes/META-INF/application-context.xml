@@ -21,7 +21,7 @@
 	 <context:component-scan base-package="com.hospital.web"/>
 	 <mvc:annotation-driven /> 
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-		 <mybatis-spring:scan base-package="com.hospital.web.mapper"/>
+	<mybatis-spring:scan base-package="com.hospital.web.mapper"/>
 	 <context:property-placeholder location="classpath:/config/database.properties"/>
 	 <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource">
 	 	<property name="driverClassName" value="${jdbc.driver}"/>
