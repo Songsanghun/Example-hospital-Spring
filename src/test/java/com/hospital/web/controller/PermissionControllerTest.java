@@ -1,10 +1,7 @@
 package com.hospital.web.controller;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
 
 
 import org.junit.Before;
@@ -20,7 +17,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.hospital.web.domain.Enums;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.mapper.Mapper;
 @RunWith(MockitoJUnitRunner.class)

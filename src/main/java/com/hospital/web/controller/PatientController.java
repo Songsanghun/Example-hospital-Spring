@@ -21,7 +21,16 @@ public class PatientController {
       logger.info("PatientController - goJoin {}","ENTER");
       return "public:patient/registerForm";
    }
-   
+   @RequestMapping(value="/goUpdate")
+   public String goUpdate(){
+      logger.info("PatientController - goUpdate {}","ENTER");
+      return "public:patient/updateForm";
+   }
+   @RequestMapping(value="/goDelete")
+   public String goDelete(){
+      logger.info("PatientController - goDelete {}","ENTER");
+      return "public:patient/deleteForm";
+   }
   
    
    @RequestMapping(value="/doctor/{docID}")

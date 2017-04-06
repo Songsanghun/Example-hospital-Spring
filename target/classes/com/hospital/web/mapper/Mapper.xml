@@ -37,7 +37,7 @@
 		<result property="position" column="nur_position"/>
 	</resultMap>
 	<insert id="registPatient">
-	  INSERT INTO ${group}(${pat_id},${pat_pass},${pat_name},${pat_gen},${pat_phone},${pat_email},${pat_job},${pat_jumin},${pat_addr},${doc_id},${nur_id}) 
+	  INSERT INTO ${group}(pat_id,pat_pass,pat_name,pat_gen,pat_phone,pat_email,pat_job,pat_jumin,pat_addr,doc_id,nur_id) 
    VALUES ( #{id}, #{pass}, #{name}, #{gen}, #{phone}, #{email},#{job}, #{jumin}, #{addr}, #{docID}, #{nurID})
    </insert>
     <insert id="registDoctor">
@@ -106,16 +106,25 @@
     nur_position like #{%value%}
   </if>
   </select>
-  <update id="updateAuthorIfNecessary">
-  update Author
+<!--   <update id="00">
+  UPDATE ${group}
     <set>
-      <if test="username != null">username=#{username},</if>
-      <if test="password != null">password=#{password},</if>
-      <if test="email != null">email=#{email},</if>
-      <if test="bio != null">bio=#{bio}</if>
+      <if test="pat_pass != null">pat_pass=#{pass},</if>
+      <if test="pat_phone != null">pat_phone#{phone},</if>
+      <if test="pat_job = null">pat_job=#{job},</if>
+      <if test="pat_email != null">pat_email=#{email},</if>
+      <if test="doc_id = null">doc_id=#{docID},</if>
+      <if test="nur_id = null">nur_id=#{nurID}</if>
     </set>
-  where id=#{id}
-  </update>
+  WHERE pat_id=#{id}
+</update> -->
+<update id="updatePatient">
+  UPDATE ${group} SET
+    pat_pass = #{pass},
+    pat_phone = #{phone},
+    pat_email = #{email}
+  WHERE pat_id = #{id}
+</update>
   
   <select id="count" resultType="int">
   	SELECT COUNT(*) FROM {}
@@ -283,11 +292,11 @@
   FROM Patient
   WHERE title LIKE #{pattern}
 </select>
-	<delete id="delete" parameterType="hashMap">
+<delete id="delete" parameterType="hashMap">
 		DELETE 
 		FROM ${group} 
-		WHERE ${key} - #{value}
-	</delete>
+		WHERE ${key} = #{value}
+</delete>
 
 
 

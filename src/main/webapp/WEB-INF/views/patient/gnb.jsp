@@ -5,6 +5,7 @@
          <li><a>진료기록</a></li>
          <li><a>게시판</a></li>
          <li><a>로그아웃</a></li>
+         <li><a>탈퇴</a></li>
    </ul>
    <script>
    
@@ -16,7 +17,7 @@
       });
       $('#patientGnb li:nth-child(2)').click(function(){
          alert('child2');
-         location.href="${context.path}/patient";
+         location.href="${context.path}/patient/goUpdate";
       });
       $('#patientGnb li:nth-child(3)').click(function(){
          alert('child3');
@@ -30,5 +31,9 @@
          alert('child5');
          location.href="${context.path}/logout";
       });
+      $('#patientGnb li:nth-child(6)').click(function(){
+          alert('child5');
+          location.href="${context.path}/patient/goDelete";
+       });
    });
    </script>

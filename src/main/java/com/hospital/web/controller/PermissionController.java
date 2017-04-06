@@ -23,6 +23,7 @@ import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
 import com.hospital.web.domain.Enums;
 import com.hospital.web.mapper.Mapper;
+import com.hospital.web.service.DeleteService;
 import com.hospital.web.service.ReadService;
 
 @Controller
@@ -130,7 +131,7 @@ public class PermissionController {
 				if (nurse.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
 					session.setAttribute("permission", nurse);
-					model.addAttribute("doctor", nurse);
+					model.addAttribute("nurse", nurse);
 					movePosition = "patient:patient/containerDetail";
 				} else {
 					logger.info("DB RESULT: {}", "password not match");
@@ -144,11 +145,86 @@ public class PermissionController {
 		}
 		return movePosition;
 	}
-
+	
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update( @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, 
+		      @RequestParam (value="id",defaultValue="none") String id,
+		      @RequestParam (value="pass",defaultValue="none") String pass,
+		      @RequestParam (value="name",defaultValue="none") String name,
+		      @RequestParam (value="addr",defaultValue="none") String addr,
+		      @RequestParam (value="nurID",defaultValue="none") String nurID,
+		      @RequestParam (value="docID",defaultValue="none") String docID,
+		      @RequestParam (value="jumin",defaultValue="none") String jumin,
+		      @RequestParam (value="gen",defaultValue="none") String gen,
+		      @RequestParam (value="phone",defaultValue="none") String phone,
+		      @RequestParam (value="email",defaultValue="none") String email,
+		      @RequestParam (value="job",defaultValue="none") String job,
+		      HttpSession session, Model model
+		     ) throws Exception {
+			String resultPage = "";
+		Person<?> person=new Person<Info>(new Patient());
+	      Patient patient=(Patient) person.getInfo();
+	      patient=(Patient) session.getAttribute("permission");
+	      patient.getId();
+	      logger.info("PermissionController() {}", patient.getId() + "===pat_id!!!!!!진입===");
+	      patient.setPass(pass);
+	      patient.getGen();
+	      patient.setEmail(email);
+	      patient.setJob("환자");
+	      patient.getJumin();
+	      patient.setPhone(phone);
+	      patient.setDocID(docID);
+	      patient.setNurID(nurID);
+	      patient.setAddr(addr);
+	      patient.getName();
+	      logger.info("PermissionController() {}", patient + "===update진입===");
+	      int result = mapper.updatePatient(patient);
+	      
+	      if(result==0){
+	    	  resultPage = "patient:patient/updateForm";
+	      }else{
+	    	  resultPage = "patient:patient/containerDetail";
+	    	  logger.info("PermissionController() {}", "=======patient디비수정완료======");
+	      }
+	    session.setAttribute("permission", patient);
+		model.addAttribute("user", patient);
+		return resultPage;
+	}
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
 	}
-
+	@RequestMapping(value="/delete", method = RequestMethod.POST)
+	public String delete(HttpSession session,
+			@RequestParam("id") String id, @RequestParam("password") String password
+		) throws Exception{
+		String goDeletePage = "";
+		Person<?> person = new Person<Info>(new Patient());
+		Patient patient = (Patient) person.getInfo();
+		
+		patient=(Patient) session.getAttribute("permission");
+	    String temp = patient.getId();
+	    logger.info("PermissionController() {}",  "===temp값 : "+temp+ "Delete진입===");
+	    if(temp.equals(id)){
+	    	patient.setId(id);
+	    }else{
+	    	goDeletePage = "patient:patient/deleteForm";
+	    }
+		patient.setPass(password);
+		logger.info("PermissionController() {}", patient + "===delete DB가기 직전===");
+		Map<String, Object> map = new HashMap<>();
+		map.put("group", patient.getGroup());
+		map.put("key", Enums.PATIENT.val());
+		map.put("value", id);
+		DeleteService deletePatient= (paramMap)->mapper.delete(paramMap); 
+		int result = deletePatient.execute(map);
+		if(result==0){
+			goDeletePage = "patient:patient/deleteForm";
+		}else{
+			session.invalidate();
+			goDeletePage = "public:common/byePage";
+		}
+		return goDeletePage;
+	}
 }
