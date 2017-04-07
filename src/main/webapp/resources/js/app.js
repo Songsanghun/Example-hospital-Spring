@@ -111,7 +111,7 @@ app.algorithm=(function(){
 	 };
 	 var swSeries = function(){//1,-2,3,-4,5,-6
 		 $('#tableRight').empty();
-			app.component.inputText('inputText').attr('placeholder','limit').appendTo(tableRight);
+			app.component.inputText('inputText').attr('placeholder','limit(100->-50)').appendTo(tableRight);
 			app.component.aButton('aButton','btn-success').html('스위치수열의 합').appendTo(tableRight)
 			.css('margin','10px auto')
 			.on('click',function(){
@@ -127,7 +127,7 @@ app.algorithm=(function(){
 		};
 	 var dSeries = function(){//1+2+4+7+11+16+22
 		 $('#tableRight').empty();
-			app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+			app.component.inputText('inputText').attr('placeholder','한계값 입력(5->25)').appendTo(tableRight);
 			app.component.aButton('aButton','btn-info').html('계차수열 합').appendTo(tableRight)
 				.css('margin','10px auto')
 				.on('click',function(){
@@ -143,7 +143,7 @@ app.algorithm=(function(){
 		};
 	 var factorial = function (){
 		 $('#tableRight').empty();
-			app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+			app.component.inputText('inputText').attr('placeholder','한계값 입력(5->153)').appendTo(tableRight);
 			app.component.aButton('aButton','btn-warning').html('펙토리얼의 합').appendTo(tableRight)
 				.css('margin','10px auto')
 				.on('click',function(){
@@ -159,7 +159,7 @@ app.algorithm=(function(){
 		};
 	 var fibonacci = function (){//1+1+2+3+5+8+13+21+34
 		 $('#tableRight').empty();
-		 app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+		 app.component.inputText('inputText').attr('placeholder','한계값 입력(5->12)').appendTo(tableRight);
 			app.component.aButton('aButton','btn-danger').html('피보나치수열의 합').appendTo(tableRight)
 				.css('margin','10px auto')
 				.on('click',function(){
