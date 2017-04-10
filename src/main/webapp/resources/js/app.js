@@ -60,6 +60,8 @@ app.algorithm = (function() {
 		series();
 		arr();
 		matrix();
+		math();
+		appl();
 	};
 	var setContentView = function() {
 	};
@@ -197,47 +199,33 @@ app.algorithm = (function() {
 	};
 
 	/* 알고리즘배열 */
-	var arr = function() {
-		var wrapper = app.component.getWrapper();
-		$('#array').on('click',function() {
-							wrapper.empty();
-							wrapper.append(app.algorithm.TABLE);
-							var arr = [ {
-								id : 'selectSort',
-								txt : '선택정렬'
-							}, {
-								id : 'bubbleSort',
-								txt : '버블정렬'
-							}, {
-								id : 'insertSort',
-								txt : '삽입정렬'
-							}, {
-								id : 'ranking',
-								txt : '석차구하기'
-							}, {
-								id : 'binSearch',
-								txt : '이분검색'
-							}, {
-								id : 'merge',
-								txt : '병합'
-							}, {
-								id : 'stack',
-								txt : '스택'
-							} ];
-							var str = '';
-							$.each(arr,	function(i, j) {str += '<li id = "'+ j.id + '"class="list=group-item"><a href="#">' + j.txt + '</a></li>';
-											});
+	var arr=function(){
+		var wrapper=app.component.getWrapper();
+		$('#array').on('click',function(){
+			alert('click arr');
+			wrapper.empty();
+			wrapper.append(app.algorithm.TABLE);
+			var arr=[{id:'selectSort',txt:'선택정렬'},
+				{id:'bubbleSort',txt:'버블정렬'},
+				{id:'insertSort',txt:'삽입정렬'},
+				{id:'ranking',txt:'석차구하기'},
+				{id:'binSearch',txt:'이분검색'},
+				{id:'merge',txt:'병합'},
+				{id:'stack',txt:'스택'}];
+			var str='';
+			$.each(arr,function(i,j){
+				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			});
 							$('#tableLeft').html(str);
 							$('#selectSort').on('click',function() {
 												var i = 0, j = 0, temp = 0;
-												var arr = randomGen();
-												for (i = 0; i < arr.length; i++) {console.log('무한루프중 iiiiiiiiiiiii : '	+ arr[i]);
+												var arr = randomGen(6);
+												for (i = 0; i < arr.length; i++) {
 													for (j = i; j < arr.length; j++) {
 														if (arr[i] > arr[j + 1]) {
 															temp = arr[i];
 															arr[i] = arr[j + 1];
 															arr[j + 1] = temp;
-															console.log('무한루프중 jjjjjjjjjjjjjjjjjjjj : '+ arr[i]);
 														}
 													}
 												}
@@ -245,7 +233,7 @@ app.algorithm = (function() {
 											});
 							$('#bubbleSort').on('click',function() {
 										var i = 0, j = 0, temp = 0;
-										var arr = randomGen();
+										var arr = randomGen(6);
 										for (i = 0; i < arr.length; i++) {
 											for (j = 0; j < arr.length; j++) {
 												if (arr[j] > arr[j + 1]) {
@@ -258,32 +246,41 @@ app.algorithm = (function() {
 										$('#tableRight').html(app.component.horList(arr,'default'));
 									});
 							$('#insertSort').on('click',function() {
-										var i = 0, j = 0, temp = 0;
-										var arr = randomGen();
-										for (i = 0; i < arr.length; i++) {
-											for (j = 0; j < i; j++) {
-												if (arr[j] > arr[i]) {
-													temp = arr[i];
-													arr[j] = arr[i];
-													arr[i] = temp;
+									var temp = 0;
+									var arr = randomGen(6);
+									for (var i = 1; i < arr.length; i++) {
+										for (var j = 0; j < i + 1; j++) {
+											if(arr[i]<arr[j]){
+												temp = arr[i];
+												arr[i] = arr[j];
+												arr[j] = temp;
 												}
 											}
 										}
 										$('#tableRight').html(app.component.horList(arr,'default'));
 									});
 							$('#ranking').on('click', function() {
-								var arr = randomGen();
-								$('#tableRight').html(horizontalTable());
+								var arr = randomGen(6);
+								var rank=[1,1,1,1,1,1];
+								for(var i = 0;i<arr.length;i++){
+									for(var j = 0;j<arr.length;j++){
+										if(arr[i]<arr[j]){
+											rank[i]++;
+										}
+									}
+								}
+								$('#tableRight').html(app.component.horList(arr,'default'));
+								$('#tableRight').html(app.component.horList(rank,'default'));
 							});
 						});
 	};
-	var randomGen = function() {
-		var i = 0, k = 0;
+	var randomGen = function(n) {
 		var arr = [];
-		for (i = 0; i < 6; i++) {
+		for (var i = 0; i < n; i++) {
 			arr[i] = (Math.floor(Math.random() * 45) + 1);
-			for (k = i; k > 0; k--) {
+			for (var k = i; k > 0; k--) {
 				if (arr[i] == arr[k - 1]) {
+					console.log('뽑은 수가 같을경우'+arr[i]+', '+arr[k-1]);
 					i--;
 				}
 			}
@@ -301,44 +298,28 @@ app.algorithm = (function() {
 		return table;
 	};
 	/* 알고리즘행열 */
-	var matrix = function() {
-		var wrapper = app.component.getWrapper();
-		$('#matrix').on('click',function() {
-					wrapper.empty();
-					wrapper.append(app.algorithm.TABLE);
-					var arr = [ {
-						id : 'basic',
-						txt : '기본5X5'
-					}, {
-						id : 'zigzag',
-						txt : '지그재그'
-					}, {
-						id : 'diamond',
-						txt : '다이아몬드'
-					}, {
-						id : 'sandGlass',
-						txt : '모래시계'
-					}, {
-						id : 'snail',
-						txt : '달팽이'
-					}, {
-						id : 'magicSquare',
-						txt : '마방진'
-					} ];
-					var str = '';
-					$.each(arr, function(i, j) {
-						str += '<li id = "' + j.id
-								+ '"class="list=group-item"><a href="#">'
-								+ j.txt + '</a></li>';
-					});
-					$('#tableLeft').html(str);
-					basic();
-				});
+	var matrix=function(){
+		$('#matrix').on('click',function(){
+			var wrapper=app.component.getWrapper();
+			wrapper.empty();
+			wrapper.append(app.algorithm.TABLE);
+			var arr=[{id:'basic',txt:'기본5X5'},
+				{id:'ziazag',txt:'지그재그'},
+				{id:'diamond',txt:'다이아몬드'},
+				{id:'sandGlass',txt:'모래시계'},
+				{id:'snail',txt:'달팽이'},
+				{id:'magicSquare',txt:'마방진'}];
+			var str='';
+			$.each(arr,function(i,j){
+				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			});
+			$('#tableLeft').html(str);	
+			basic();
+		});
+		
 	};
 	var basic = function() {
-		var wrapper = app.component.getWrapper();
 		$('#basic').on('click',function() {
-					wrapper.empty();
 		var mtx = new Array(new Array(5),new Array(5),new Array(5),new Array(5),new Array(5));
 		var jason = [ {
 				a : 1,
@@ -370,16 +351,47 @@ app.algorithm = (function() {
 			c : 23,
 			d : 24,
 			e : 25
-		} 
-		]
+		}];
 		$('#tableRight').html(app.component.panelTable(jason,'Basic','default'));
 		});
 	};
-	/* 알고리즘수학 */
-	var math = function() {
+	/* 알고리즘수학 */	
+	var math=function(){
+		var wrapper=app.component.getWrapper();
+		$('#math').on('click',function(){
+			wrapper.empty();
+			wrapper.append(app.algorithm.TABLE);
+			var arr=[{id:'determinePrime',txt:'소수판별'},
+				{id:'primeSum',txt:'소수의합'},
+				{id:'primeCount',txt:'소수의개수'},
+				{id:'lcmGcd',txt:'최대최소공배수'},
+				{id:'euclid',txt:'유클리드 호제법'},
+				{id:'fatorization',txt:'약수구하기'},
+				{id:'primeFactor',txt:'소인수분해'},
+				{id:'multiSum',txt:'배수의 합'},
+				{id:'approx',txt:'근사값 구하기'}];
+			var str='';
+			$.each(arr,function(i,j){
+				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			});
+			$('#tableLeft').html(str);
+			determinePrime();
+		});
+		
+	};
+	var determinePrime=function(){
+		var wrapper=app.component.getWrapper();
+		$('#determinePrime').on('click',function(){
+			alert('determinePrime click');
+		});
 	};
 	/* 알고리즘응용 */
 	var appl = function() {
+		var wrapper = app.component.getWrapper();
+		$('#appl').on('click',function() {
+					wrapper.empty();
+					alert('math CLICK!!!');
+		});
 	};
 	return {
 		init : init,
@@ -395,6 +407,7 @@ app.algorithm = (function() {
 		matrix : matrix,
 		basic : basic,
 		math : math,
+		determinePrime : determinePrime,
 		appl : appl
 	};
 })();
