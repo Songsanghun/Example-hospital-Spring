@@ -270,7 +270,7 @@ app.algorithm = (function() {
 									}
 								}
 								$('#tableRight').html(app.component.horList(arr,'default'));
-								$('#tableRight').html(app.component.horList(rank,'default'));
+								$('#tableRight').append(app.component.horList(rank,'default'));
 							});
 						});
 	};

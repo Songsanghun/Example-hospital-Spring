@@ -39,5 +39,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="C:/Users/hb2005/SpringProjects/lombok.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/hb2005/.m2/repository/mysql/mysql-connector-java/5.1.6/mysql-connector-java-5.1.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
