@@ -12,9 +12,9 @@ app.context = (function() {
 		app.component.init();
 		app.algorithm.init();
 		app.oop.init();
+		app.person.init();
 	};
 	var setContentView = function() {
-
 	};
 	return {
 		init : init,
@@ -465,40 +465,65 @@ app.oop = (function() {
 		}
 	};
 })();
-app.person = (function() {
+app.info = (function() {
 	var _name, _age, _gender, _job;
 	return {
-		setName : function(name) {
-			this._name = name;
-		},
-		setAge : function(age) {
-			this._age = age;
-		},
-		setGender : function(gender) {
-			this._gender = gender;
-		},
-		setJob : function(job) {
-			this._job = job;
-		},
-		getName : function() {
-			return this._name;
-		},
-		getAge : function() {
-			return this._age;
-		},
-		getGender : function() {
-			return this._gender;
-		},
-		getJob : function() {
-			return this._job;
-		},
+		setName : function(name) {this._name = name;},
+		setAge : function(age) {this._age = age;},
+		setGender : function(gender) {this._gender = gender;},
+		setJob : function(job) {this._job = job;},
+		getName : function() {return this._name;},
+		getAge : function() {return this._age;},
+		getGender : function() {return this._gender;},
+		getJob : function() {return this._job;},
 		toString : function() {
 			return this._name + ',' + this._age + ',' + this._gender + ','
 					+ this._job;
 		}
 	};
-
 })();
+app.person = (function(){
+	var wrapper,ctx,img,js,css;
+	var init = function(){
+		wrapper = app.component.getWrapper();
+		ctx = app.session.getContextPath();
+		img = app.session.getImagePath();
+		js = app.session.getJavascriptPath();
+		css = app.session.getStylePath();
+		alert('person enter');
+		$('#brand').on('click',function(){
+			alert('brand click!!');
+		});
+		$('#wrapper').load(ctx+'/login/form');
+		login();
+	};
+	var login=function() {
+		$('#login-submit').on('click',function(){
+			alert('login-submit click!!');
+		});
+	    $('#login-form-link').on('click',function(e) {
+	    	alert('login-form-link click');
+			$("#login-form").delay(100).fadeIn(100);
+	 		$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+		$('#register-form-link').on('click',function(e) {
+			alert('register-form-link');
+			$("#register-form").delay(100).fadeIn(100);
+	 		$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+	};
+	return{
+		init : init,
+		login : login
+	};
+})();
+
 /*******************************************************************************
  * View app.component app.navi app.patient
  * 

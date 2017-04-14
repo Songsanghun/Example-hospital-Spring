@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.hospital.web.domain.Doctor;
@@ -23,23 +24,23 @@ import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
 import com.hospital.web.domain.Enums;
 import com.hospital.web.mapper.Mapper;
-import com.hospital.web.service.DeleteService;
-import com.hospital.web.service.ReadService;
+import com.hospital.web.service.IDeleteService;
+import com.hospital.web.service.IGetService;
 
-@Controller
+@RestController
 @SessionAttributes("permission")
 public class PermissionController {
 	private static final Logger logger = LoggerFactory.getLogger(PermissionController.class);
 	@Autowired
 	Mapper mapper;
 
-	@RequestMapping("/login")
+	@RequestMapping("/test/login")
 	public String login() {
 		logger.info("PermissionController - goLogin() {}", "ENTER");
 		return "public:common/loginForm";
 	}
 
-	@RequestMapping(value = "/{permission}/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/test/{permission}/login", method = RequestMethod.POST)
 	public String login(@RequestParam("id") String id, @RequestParam("password") String password,
 			@PathVariable String permission, HttpSession session, Model model) throws Exception {
 		logger.info("Permission - login() {}", "POST");
@@ -56,7 +57,7 @@ public class PermissionController {
 			map.put("group", patient.getGroup());
 			map.put("key", Enums.PATIENT.val());
 			map.put("value", id);
-			ReadService existPatient = (paramMap)-> mapper.exist(paramMap);
+			IGetService existPatient = (paramMap)-> mapper.exist(paramMap);
 			Integer count = (Integer) existPatient.execute(map);
 			logger.info("ID exist ? {}", count);
 
@@ -64,7 +65,7 @@ public class PermissionController {
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition = "public:common/loginForm";
 			} else {
-				ReadService findPatient = (paramMap)->mapper.findPatient(paramMap); 
+				IGetService findPatient = (paramMap)->mapper.findPatient(paramMap); 
 				patient = (Patient) findPatient.execute(map);
 				if (patient.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
@@ -87,7 +88,7 @@ public class PermissionController {
 			map.put("group", doctor.getGroup());
 			map.put("key", Enums.DOCTOR.val());
 			map.put("value", id);
-			ReadService existDoctor = (o)->mapper.exist(o);
+			IGetService existDoctor = (o)->mapper.exist(o);
 			count = mapper.exist(map);
 			logger.info("ID exist ? {}", count);
 
@@ -95,7 +96,7 @@ public class PermissionController {
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition = "public:common/loginForm";
 			} else {
-				ReadService findDoctor = (paramMap)-> mapper.findDoctor(paramMap);
+				IGetService findDoctor = (paramMap)-> mapper.findDoctor(paramMap);
 				doctor = (Doctor) findDoctor.execute(map);
 				if (doctor.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
@@ -118,7 +119,7 @@ public class PermissionController {
 			map.put("group", nurse.getGroup());
 			map.put("key", Enums.NURSE.val());
 			map.put("value", id);
-			ReadService existNurse = (paramMap)->mapper.exist(paramMap);
+			IGetService existNurse = (paramMap)->mapper.exist(paramMap);
 			count = (Integer) existNurse.execute(map);
 			logger.info("ID exist ? {}", count);
 
@@ -126,7 +127,7 @@ public class PermissionController {
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition = "public:common/loginForm";
 			} else {
-				ReadService findNurse = (o)->mapper.findNurse(o);
+				IGetService findNurse = (o)->mapper.findNurse(o);
 				nurse = (Nurse) findNurse.execute(map);
 				if (nurse.getPass().equals(password)) {
 					logger.info("DB RESULT: {}", "success");
@@ -217,7 +218,7 @@ public class PermissionController {
 		map.put("group", patient.getGroup());
 		map.put("key", Enums.PATIENT.val());
 		map.put("value", id);
-		DeleteService deletePatient= (paramMap)->mapper.delete(paramMap); 
+		IDeleteService deletePatient= (paramMap)->mapper.delete(paramMap); 
 		int result = deletePatient.execute(map);
 		if(result==0){
 			goDeletePage = "patient:patient/deleteForm";
