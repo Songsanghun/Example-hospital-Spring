@@ -49,8 +49,11 @@ app.session = (function() {
 		getImagePath : getImagePath
 	};
 })();
-app.util = (function() {
-})();
+app.util = {
+		validation : function(x){
+			return (x != "");
+		}
+};
 app.algorithm = (function() {
 	var init = function() {
 		onCreate();
@@ -385,6 +388,7 @@ app.algorithm = (function() {
 			alert('determinePrime click');
 		});
 	};
+	
 	/* 알고리즘응용 */
 	var appl = function() {
 		var wrapper = app.component.getWrapper();
@@ -490,37 +494,10 @@ app.person = (function(){
 		img = app.session.getImagePath();
 		js = app.session.getJavascriptPath();
 		css = app.session.getStylePath();
-		alert('person enter');
-		$('#brand').on('click',function(){
-			alert('brand click!!');
-		});
-		$('#wrapper').load(ctx+'/login/form');
-		login();
-	};
-	var login=function() {
-		$('#login-submit').on('click',function(){
-			alert('login-submit click!!');
-		});
-	    $('#login-form-link').on('click',function(e) {
-	    	alert('login-form-link click');
-			$("#login-form").delay(100).fadeIn(100);
-	 		$("#register-form").fadeOut(100);
-			$('#register-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
-		$('#register-form-link').on('click',function(e) {
-			alert('register-form-link');
-			$("#register-form").delay(100).fadeIn(100);
-	 		$("#login-form").fadeOut(100);
-			$('#login-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
+		$('#wrapper').load(ctx+'/permission/form');
 	};
 	return{
-		init : init,
-		login : login
+		init : init
 	};
 })();
 
@@ -615,15 +592,151 @@ app.component = (function() {
 					+'</tr>';
 			});
 			table += '</tbody></table>'
-				
 			return table;
 		}
 	};
 })();
+app.permission=(function(){
+	var execute = function(){
+		var context = app.session.getContextPath();
+		console.log('app.login context : '+context);
+		$('#login-submit').on('click',function(e){
+			e.preventDefault();
+			$.ajax({
+				url: context+"/login",
+				method: "POST",
+				data: JSON.stringify({
+					id : $('#username').val(),
+					pass : $('#password').val()
+					}),
+				dataType: "json",
+				contentType : 'application/json',
+				success : function(data){
+					if(data.result==='success'){
+						$('#wrapper').html(app.patient.gnb());
+						$('#wrapper').append(app.patient.detail());
+						$('#name').text(data.name);
+					}else{
+						alert('조회된 ID 가 존재하지 않습니다.');
+					}
+				},
+				error : function(xhr,status,msg){
+					//xhr 과 status, mag 를 1,2,3으로 해도 상관없다.
+					//Ajax에서는 파라미터의 위치값에 의해서 역할이 정해진다.					
+					alert('로그인 실패이유 : '+ msg);
+				}
+			});
+		});
+	    $('#login-form-link').on('click',function(e) {
+			$("#login-form").delay(100).fadeIn(100);
+	 		$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+		$('#register-form-link').on('click',function(e) {
+			$("#register-form").delay(100).fadeIn(100);
+	 		$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault(); //위는 JQuery다.
+		});
+		/*
+		 
+		 *
+		 radio 체크 할때 마다 income-info 와 화면이 변동됨
+		 * */
+		$('#register-patient').on('click',function(e){
+			e.preventDefault(); //ajax 시작 지점에 써야한다.
+			var _id = $('#id').val();
+			var _pass = $('#pass').val();
+			var _name = $('#name').val();
+			var _phone = $('#phone').val();
+			
+			if(app.util.validation(_id)
+					&& app.util.validation(_pass)
+					&& app.util.validation(_name)
+					&& app.util.validation(_phone)){
+				var json = {
+						'id' : _id,
+						'pass' : _pass,
+						'name' : _name,
+						'phone' : _phone,
+						'email' : $('#email').val() 
+				};
+				$.ajax({
+					url : context+'/post/patient',
+					method : 'POST',
+					data : JSON.stringify(json),
+					dataType : 'json',
+					contentType : 'application/json',
+					success : function(data){
+						alert('환영합니다.' + data.name +'님'+'로그인해주세요.');
+						location.reload();
+					},
+					error : function(xhr,status,msg){alert('환자 등록 시')+msg;}
+				});
+			}else{
+				alert('반드시 입력될 값이 비워져 있습니다.');
+			}
+		});
+	};
+	return {execute:execute}
+})();
 app.navi = (function() {
 })();
-app.patient = (function() {
-})();
+
+app.patient = {
+	
+	gnb : function(){
+		var gnb = '<div id="app-patient-gnb" class="app-patient-gnb" style="position: relative; "><ul class="index_gnb">';
+		var arr = ['home/홈으로','mypage/MY PAGE','treatlist/나의 진료기록','board/게시판','customer/고객참여마당','main/로그아웃'];
+  		for(var i=0; i<6; i++){
+  		   gnb+='<li><a class="app-patient-gnb-li" href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
+  	   }
+		   gnb += '</ul></div>';
+    return gnb;
+},
+	detail : function(){
+		
+		var detail =  
+		/*<style>
+		.pat_detail {text-align: center; margin:0 auto;}
+		.pat_detail tr td{border: 1px solid #bbbbbb}
+		</style>*/
+		'<div class="con_setting" style="position: relative; top: 50px; text-align:center; width:100%">'
+		+  '<div>'
+		+        '<table class="pat_detail">'
+		+         	  '<tr style="text-align: left;">'
+		+                    '<td colspan="5"><div><img src="${context}/common/defaultimg.jpg" alt="" width="160px"/></div></td></tr>'
+		+                    '<tr><td style="width: 60px" rowspan="5"><span style="font-size: 20px">나<br />의<br />정<br />보</span></td>'
+		+                    '<td style="width: 100px" >이름</td>'
+		+                    '<td style="width: 150px" id="name"></td>'
+		+                    '<td style="width: 100px">직업</td>'
+		+                    '<td style="width: 150px"></td></tr>'
+		+					'<tr><td>생년월일</td>'
+		+                    '<td></td>'
+		+                    '<td>키</td>'
+		+                    '<td>180cm</td></tr>'
+		+					'<tr><td>성별</td>'
+		+                    '<td></td>'
+		+                    '<td>나이/몸무게</td>'
+		+                    '<td>/80kg</td></tr>'
+		+					'<tr><td>전화번호</td>'
+		+                    '<td></td>'
+		+                    '<td>혈액형</td>'
+		+                    '<td>A형</td></tr>'
+		+					'<tr><td>주소</td>'
+		+                    '<td></td>'
+		+                    '<td>주치의</td>'
+		+                    '<td>'
+		+                    '<a onclick="docDetail()" href="#"> 한석규 </a>'
+		+                    '</td></tr></table>'
+		+					'<button onclick="">클릭</button>'
+		+					'</div>'
+		      return detail;            
+	}
+}
 app.algorithm.TABLE = '<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
 		+ '<tr style="border: 1px solid black;">'
 		+ '<td id="tableLeft" style="width: 50%;border: 1px solid black;"></td>'

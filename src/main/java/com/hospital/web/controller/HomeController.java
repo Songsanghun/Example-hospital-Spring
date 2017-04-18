@@ -29,8 +29,8 @@ public class HomeController {
 		logger.info("진입: ","ok");
 		return "public:common/container";
 	}
-	@RequestMapping(value="/login/form")
+	@RequestMapping(value="/permission/form")
 	public String login(){
-		return "common/login.jsp";
+		return "common/permission.jsp";
 	}
 }

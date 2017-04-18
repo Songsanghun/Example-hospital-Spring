@@ -101,4 +101,7 @@ public class PersonService {
 		map.put("result", (service.execute(ParamMap)==0)?"fail":"success");
 		   return map;
 	}
+	public int exist(Map<String, String> paramMap) throws Exception {
+		return mapper.exist(paramMap);
+	}
 }

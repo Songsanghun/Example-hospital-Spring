@@ -130,7 +130,7 @@
   	SELECT COUNT(*) FROM {}
   </select>
   <select id="exist" resultType="int" parameterType="hashMap">
-  	SELECT COUNT(*) FROM ${group} WHERE ${key} = #{value}
+  	SELECT COUNT(*) FROM ${group} WHERE ${idType} = #{id}
   </select>
   <select id="find"  resultType="com.hospital.web.domain.Patient">
     	SELECT 

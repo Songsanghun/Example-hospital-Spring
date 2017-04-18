@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+.text-no-underline{text-decoration: none;}
+#app-patient-gnb{background-color: #51b6e1; border-bottom: 3px solid #0d89b3; border-top: 3px solid #0d89b3;}
+#app-patient-gnb-li{color: white; text-align: center; text-decoration: none; background-color: #51b6e1; padding: 0 10px; border-left: 1px solid white; border-right: 1px solid white;}	
+#app-patient-detail{position: relative; top: 50px; text-align:center; width:100%}
+.app-table{border:1px solid #585858;border-collapse: collapse;}
+.app-table tr{border:1px solid #585858;border-collapse: collapse;}
+.app-table tr>th{border:1px solid #585858;border-collapse: collapse;}
+.app-table tr>td{border:1px solid #585858;border-collapse: collapse;}
+.table_bottom{border-bottom:1px solid #585858;border-collapse: collapse;}
+.table_bottom tr{border-bottom:1px solid #585858;border-collapse: collapse;}
+.table_bottom tr th{border-bottom:1px solid #585858;border-collapse: collapse;}
+.table_bottom tr td{border-bottom:1px solid #585858;border-collapse: collapse;}
+.table_even tr:nth-child(even){background-color:#ffffb9}
+.table_odd tr:nth-child(odd){background-color:#ffffb9}

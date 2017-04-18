@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.ParagraphAction;
+
+import org.apache.ibatis.binding.MapperMethod.ParamMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,24 +42,15 @@ public class PersonController {
    @Autowired Nurse nurse;
    @Autowired PersonService personService;
 
-   @RequestMapping(value = "/post/{group}", method = RequestMethod.POST,
+   @RequestMapping(value = "/post/patient", method = RequestMethod.POST,
 		   consumes = "application/json")
    public @ResponseBody Map<?,?> register(
-      @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, 
-      @PathVariable String group,
-      @SuppressWarnings("rawtypes") @RequestBody Person target,
-      Command command
+      @RequestBody Patient p
    ) throws Exception {
       logger.info("PersonController() {}", "register진입");
-      Map<?,?>map = new HashMap<>();
-      logger.info("PersonController() {}", patient + "register진입");
-      switch(group){
-      case "patient": map = personService.postPatient(target); break;
-      case "doctor": map = personService.postDoctor(target); break;
-      case "nurse": map = personService.postNurse(target); break;
-      case "admin": map = personService.postAdmin(target); break;
-      default: break;
-      }
+      Map<String,String>map = new HashMap<>();
+      logger.info("PersonController() {}", p + "register진입");
+      map.put("name", p.getName());
       return map;
    }
    @RequestMapping("/get/{group}/{target}")
@@ -98,13 +92,80 @@ public class PersonController {
 	   }
 	   return o;
    }
-   @RequestMapping(value = "/login", method = RequestMethod.POST,
+@RequestMapping(value = "/login", method = RequestMethod.POST,
 		   consumes = "application/json")
-   public @ResponseBody Map<?,?> login(){
+   public @ResponseBody Map<?,?> login(
+		   @RequestBody Map <String,String>paramMap) throws Exception{
 	   Map<String,String>map = new HashMap<>();
 	   logger.info("PersonController - login() {}!!","ENTER");
-	   map.put("name", "홍길동");
-	   map.put("login", "success");
+	   String id = paramMap.get("id");
+	   String pass = paramMap.get("pass");
+	   System.out.println("넘어온 id : "+id);
+	   System.out.println("넘어온 pass : "+pass);
+	   // exist
+	   // SELECT COUNT(*) FROM ${group} WHERE ${idType} = #{id}
+	   String[] groupArr = {"Patient/pat_id/"+id,"Doctor/doc_id/"+id,"Nurse/nurse_id/"+id};
+	   String target = "";
+	   for(int i=0;i<groupArr.length;i++){
+		   String[] temp = groupArr[i].split("/");
+		   paramMap.put("group", temp[0]);
+		   paramMap.put("idType", temp[1]);
+		   paramMap.put("id", temp[2]);
+		   System.out.println("=======DB가기전 id======"+paramMap.get("id"));
+		   int rs = personService.exist(paramMap);
+		   System.out.println("rs값?????????????"+rs);
+		   System.out.println("=======DB간후 id======"+paramMap.get("id"));
+		   if(rs!=0){
+			   target = groupArr[i];
+			   System.out.println("==DB 다녀온 Target===" + target);
+			   break;
+		   }
+	   }
+	   if(target.equals("")){
+		   System.out.println("======target nonononono======"+target);
+		   map.put("result", "fail");
+	   }else{
+		   System.out.println("======target okokokokokok======"+target);
+		   map.put("result", "success");
+		   String[] arr = target.split("/");
+		   String[] arrTemp = arr[0].split("/");
+		   System.out.println("--------------"+arr[0]);
+		   System.out.println("=============="+arrTemp[0]);
+		   switch (arr[0]) {
+		   case "Patient":
+			System.out.println("========================"+arr[0]);
+			System.out.println("========================"+arrTemp[0]);
+			paramMap.clear();
+			paramMap.put("group", arr[0]);
+			paramMap.put("key", arr[1]);
+			paramMap.put("value", arr[2]);
+			Patient patient = personService.getPatient(paramMap);
+			map.put("name", patient.getName());
+			map.put("group", "고객");
+			System.out.println("===name==="+map.get("name"));
+			break;
+		   case "Doctor":
+			paramMap.clear();
+			paramMap.put("group", arrTemp[0]);
+			paramMap.put("key", arrTemp[1]);
+			paramMap.put("value", id);
+			Doctor doctor = personService.getDoctor(paramMap);
+			map.put("name", doctor.getName());
+			map.put("group", "의사");
+			break;
+		   case "Nurse":
+			paramMap.clear();
+			paramMap.put("group", arrTemp[0]);
+			paramMap.put("key", arrTemp[1]);
+			paramMap.put("value", id);   
+			Nurse nurse = personService.getNurse(paramMap);
+			map.put("name", nurse.getName());
+			map.put("group", "간호사");
+			break;	
+		   default:
+			break;
+		}
+	   }
 	   return map;
    }
    
@@ -179,7 +240,6 @@ public class PersonController {
 	   }
 	   return map;
    }
-
 }
    
    
