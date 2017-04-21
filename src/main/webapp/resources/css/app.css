@@ -1,15 +1,90 @@
 @CHARSET "UTF-8";
-.text-no-underline{text-decoration: none;}
-#app-patient-gnb{background-color: #51b6e1; border-bottom: 3px solid #0d89b3; border-top: 3px solid #0d89b3;}
-#app-patient-gnb-li{color: white; text-align: center; text-decoration: none; background-color: #51b6e1; padding: 0 10px; border-left: 1px solid white; border-right: 1px solid white;}	
-#app-patient-detail{position: relative; top: 50px; text-align:center; width:100%}
+/*
+========= app-global ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+.app-bg-color-black{background-color: black;}
+.app-bg-color-skyblue{background-color:skyblue;}
+.app-bg-color-darkgray{background-color:#5a5a5a;}
+.app-border-dotted {border-style: dotted;}
+.app-border-dashed {border-style: dashed;}
+.app-border-solid {border-style: solid;}
+.app-border-double {border-style: double;}
+.app-border-groove {border-style: groove;}
+.app-border-ridge {border-style: ridge;}
+.app-border-inset {border-style: inset;}
+.app-border-outset {border-style: outset;}
+.app-border-none {border-style: none;}
+.app-border-hidden {border-style: hidden;}
+.app-border-mix {border-style: dotted dashed solid double;}
+.app-border-blue{color: blue;}
+.app-border-red{color: red;}
+.app-border-yellow{color: yellow;}
+.app-border-white{color: white;}
+.app-display-block{display: block;}
+.app-display-inline{display: inline;}
+.app-display-none{display: none;} /* no space */
+.app-display-hidden{visibility: hidden;} /* taking space */
+.app-event-hover:hover{background-color: blue;}
+.app-font-bold{ font-weight: bold;}
+.app-font-italic{font-style: italic;}
+.app-gnb {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: #333;}
+.app-gnb li {float: left;}
+.app-gnb li a { display: block;color: white;text-align: center;padding: 14px 16px;text-decoration: none;}
+.app-gnb li a:hover {background-color: #ff0000;}
+.app-height-full-size{height:100%;}
+.app-list-circle{list-style-type: circle;}
+.app-list-square{list-style-type: square;}
+.app-list-upper-roman{list-style-type: upper-roman;}
+.app-list-lower-alpha{list-style-type: lower-alpha;}
+.app-lnb {list-style-type: none;margin: 0;padding: 0;width: 200px;background-color: #f1f1f1;border: 1px solid #555;}
+.app-lnb li a {display: block;color: #000;padding: 8px 16px;text-decoration: none;}
+.app-lnb li {text-align: center;border-bottom: 1px solid #555;}
+.app-lnb li:last-child {border-bottom: none;}
+.app-lnb li a.active {background-color: #4CAF50;color: white;}
+.app-lnb li a:hover:not(.active) {background-color: #555;color: white;}
+.app-margin-center{margin: 0 auto;}
+.app-pagination {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: white;}
+.app-pagination li {float: left;}
+.app-pagination li a {display: block;color: white;text-align: center;padding: 14px 16px;text-decoration: none;}
+.app-pagination li a:hover {background-color: white;}
+.app-position-fixed{position: fixed;}
+.app-position-absolute{position: absolute;}
+.app-position-relative{position: relative;}
 .app-table{border:1px solid #585858;border-collapse: collapse;}
 .app-table tr{border:1px solid #585858;border-collapse: collapse;}
 .app-table tr>th{border:1px solid #585858;border-collapse: collapse;}
 .app-table tr>td{border:1px solid #585858;border-collapse: collapse;}
-.table_bottom{border-bottom:1px solid #585858;border-collapse: collapse;}
-.table_bottom tr{border-bottom:1px solid #585858;border-collapse: collapse;}
-.table_bottom tr th{border-bottom:1px solid #585858;border-collapse: collapse;}
-.table_bottom tr td{border-bottom:1px solid #585858;border-collapse: collapse;}
-.table_even tr:nth-child(even){background-color:#ffffb9}
-.table_odd tr:nth-child(odd){background-color:#ffffb9}
+.app-table-bottom{border-bottom:1px solid #585858;border-collapse: collapse;}
+.app-table-bottom tr{border-bottom:1px solid #585858;border-collapse: collapse;}
+.app-table-bottom tr th{border-bottom:1px solid #585858;border-collapse: collapse;}
+.app-table-bottom tr td{border-bottom:1px solid #585858;border-collapse: collapse;}
+.app-table-even tr:nth-child(even){background-color:#ffffb9}
+.app-table-odd tr:nth-child(odd){background-color:#ffffb9}
+.app-table-center{text-align: center;}
+.app-text-left{text-align: left;}
+.app-text-right{text-align: right;}
+.app-text-no-underline{text-decoration: none;}
+.app-text-overline{text-decoration: overline;}
+.app-text-line-through{text-decoration: line-through;}
+.app-width-full-size{width: 100%;}
+/*
+========= app-patient ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/ 
+.app-chart-top{height:auto; width:800px; border:1px solid black;padding:0;}
+.app-chart-center{height:300px; width:800px;  border:1px solid black; }
+.app-chart-center-center{height:290px; width:780px;  border:1px solid black; margin: auto; }
+.app-chart-bottom{height:auto; width:800px;  border:1px solid black;}
+.app-chart-bottom-table{border:1px solid black; width: 800px; height: 30px;}
+.app-chart-table-elem{border:1px solid black; width: 110px; height: 30px; }
+.app-chart-top-table{border:1px solid black; width: 30px; height: 30px; }
+.app-chart-col-table{border:1px solid black; width: 30px; height: 30px; }

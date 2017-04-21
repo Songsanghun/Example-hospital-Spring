@@ -9,10 +9,14 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 	crossorigin="anonymous">
+<link rel="stylesheet" href="${context}/resources/css/app.css" />
+<link rel="stylesheet" href="${context}/resources/css/reset.css" />
 <script src="${context}/resources/js/app.js"></script>
+<script src="${context}/resources/js/cookie.js"></script>
+<script src="${context}/resources/js/fileupload.js"></script>
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav id="boot-nav" class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -32,7 +36,7 @@
 				<ul class="nav navbar-nav">
 					<li class="active"><a id="hospital" href="#">Hospital <span
 							class="sr-only">(current)</span></a></li>
-					<li><a href="#">Link</a></li>
+					<li><a id="bbs" href="#">BBS</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">Algorithm <span class="caret"></span></a>
